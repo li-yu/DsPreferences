@@ -2,7 +2,7 @@
 
 > [Jetpack DataStore](https://mp.weixin.qq.com/s/26Uxotf3-oceKUbrujqX3w)，这是一个经过改进的全新数据存储解决方案，旨在替代原有的 SharedPreferences。Jetpack DataStore 基于 Kotlin 协程和 Flow 开发，并提供两种不同的实现: Proto DataStore 和 Preferences DataStore。  -《谷歌开发者》公众号
 
-这几天抽空学习了下基本用法，基于 Preferences DataStore 实现了一个简单的数据存储扩展，还是熟悉的样子，还是熟悉的配方，这就是全新 DsPreferences.
+这几天抽空学习了下基本用法，基于 Preferences DataStore 实现了一个简单的数据存储扩展，还是熟悉的样子，还是熟悉的配方，这就是全新 **DsPreferences**。
 
 ## Getting started
 
@@ -20,7 +20,7 @@ allprojects {
 Step 2. Add the dependency:
 
 ```
-
+implementation 'com.github.li-yu:DataStoreExt:1.0.0'
 ```
 
 ## Usage
