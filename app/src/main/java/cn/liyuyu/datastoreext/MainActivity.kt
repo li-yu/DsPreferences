@@ -18,20 +18,11 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-//        launch(Dispatchers.IO) {
-//            DsPreferences.set("settings", "fuck")
-//            DsPreferences.set("settings", "foo")
-//            DsPreferences.set("settings", "bar")
-//            val value = DsPreferences.get("settings", "DefaultValue")
-//            withContext(Dispatchers.Main) {
-//                findViewById<TextView>(R.id.tvValue).text = value.toString()
-//            }
-//        }
 
         launch(Dispatchers.IO) {
-            var foo = Foo("frank", 18)
+            var foo = Foo("bar", 18)
             DsPreferences.set("foo", foo)
-            val value = DsPreferences.get("foo", Foo("foo", -1))
+            val value = DsPreferences.get<Foo>("foo")
             withContext(Dispatchers.Main) {
                 findViewById<TextView>(R.id.tvValue).text = value.toString()
             }

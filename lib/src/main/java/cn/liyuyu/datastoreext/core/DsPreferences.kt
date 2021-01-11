@@ -25,26 +25,21 @@ object DsPreferences {
         this.converter = converter
     }
 
-    inline fun <reified T : Any> flow(key: String, defaultValue: T) = dataStore.data.map {
-        var needConverter = false
-        val preferencesKey = when (T::class) {
-            Int::class, String::class, Boolean::class, Float::class, Long::class, Double::class -> preferencesKey<T>(
-                key
-            )
-            else -> {
-                needConverter = true
-                preferencesKey<String>(key)
+    inline fun <reified T : Any> flow(key: String, defaultValue: T? = null) = dataStore.data.map {
+        when (T::class) {
+            Int::class, String::class, Boolean::class, Float::class, Long::class, Double::class -> {
+                it[preferencesKey<T>(key)] ?: defaultValue
             }
-        }
-        val value = it[preferencesKey]
-        if (value == null) {
-            defaultValue
-        } else {
-            if (needConverter) converter?.deserialize(value.toString(), T::class.java) else value
+            else -> {
+                converter?.deserialize(
+                    it[preferencesKey(key)] ?: "",
+                    T::class.java
+                )
+            }
         }
     }
 
-    suspend inline fun <reified T : Any> get(key: String, defaultValue: T) =
+    suspend inline fun <reified T : Any> get(key: String, defaultValue: T? = null) =
         flow(key, defaultValue).first()
 
     suspend inline fun <reified T : Any> set(key: String, value: T) {
@@ -55,9 +50,8 @@ object DsPreferences {
                 }
             }
             else -> {
-                val stringValue = this.converter?.serialize(value) ?: ""
                 dataStore.edit {
-                    it[preferencesKey<String>(key)] = stringValue
+                    it[preferencesKey<String>(key)] = this.converter?.serialize(value) ?: ""
                 }
             }
         }
