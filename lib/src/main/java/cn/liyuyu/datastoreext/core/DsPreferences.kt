@@ -40,7 +40,7 @@ object DsPreferences {
         if (value == null) {
             defaultValue
         } else {
-            if (needConverter) converter?.to(value.toString(), T::class.java) else value
+            if (needConverter) converter?.deserialize(value.toString(), T::class.java) else value
         }
     }
 
@@ -55,7 +55,7 @@ object DsPreferences {
                 }
             }
             else -> {
-                val stringValue = this.converter?.from(value) ?: ""
+                val stringValue = this.converter?.serialize(value) ?: ""
                 dataStore.edit {
                     it[preferencesKey<String>(key)] = stringValue
                 }
