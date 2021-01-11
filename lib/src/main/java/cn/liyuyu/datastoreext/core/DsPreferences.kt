@@ -19,7 +19,7 @@ object DsPreferences {
     }
 
     fun init(context: Context, name: String = "DsPreferences") {
-        mContext = context
+        mContext = context.applicationContext
         mName = name
     }
 
