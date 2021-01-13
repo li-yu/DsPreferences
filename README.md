@@ -1,13 +1,13 @@
+[![](https://jitpack.io/v/li-yu/Datastoreext.svg)](https://jitpack.io/#li-yu/Datastoreext)
+
 # DsPreferences
 
-> [Jetpack DataStore](https://mp.weixin.qq.com/s/26Uxotf3-oceKUbrujqX3w)，这是一个经过改进的全新数据存储解决方案，旨在替代原有的 SharedPreferences。Jetpack DataStore 基于 Kotlin 协程和 Flow 开发，并提供两种不同的实现: Proto DataStore 和 Preferences DataStore。  -《谷歌开发者》公众号
+> [Jetpack DataStore](https://mp.weixin.qq.com/s/26Uxotf3-oceKUbrujqX3w)，这是一个经过改进的全新数据存储解决方案，旨在替代原有的 SharedPreferences。Jetpack DataStore 基于 Kotlin 协程和 Flow 开发，并提供两种不同的实现: Proto DataStore 和 Preferences DataStore。
 
 这几天抽空学习了下基本用法，基于 Preferences DataStore 实现了一个简单的数据存储扩展，还是熟悉的样子，还是熟悉的配方，这就是全新 **DsPreferences**。
 
-## Getting started
-
-Step 1. Add it in your root build.gradle at the end of repositories:
-
+## 添加依赖
+1. 添加 jitpack 源到工程 build.gradle ：
 ```
 allprojects {
     repositories {
@@ -17,17 +17,16 @@ allprojects {
 }
 ```
 
-Step 2. Add the dependency:
-
+2. 添加 DsPreferences 依赖：
 ```
 implementation 'com.github.li-yu:DataStoreExt:1.0.0'
 ```
 
-## Usage
-目前支持基本类型：Int, Long, Boolean, Float, Double, String，以及自定义 Converter 实现复杂实体类型的存取。
+## 使用
+目前支持基本数据类型：Int, Long, Boolean, Float, Double, String 以及自定义 Converter 实现复杂实体类型的存取。
 
 #### 初始化！！！
-务必一定初始化！！！如果只是基本数据类型的存取，用 `DsPreferences.init(this)` 初始化即可，也支持自定义文件名和序列化器。
+务必一定初始化！！！如果只是基本数据类型的存取，用 `DsPreferences.init(this)` 初始化即可，当然也可选支持自定义文件名和 Converter。
 ``` kotlin
 class App : Application() {
     override fun onCreate() {
@@ -52,7 +51,7 @@ val foo = DsPreferences.get<Foo>("foo") // 如果读取失败则返回 null
 ```
 
 #### 2. ViewModel + LiveData 用法
-官方推荐的用法，不过实际使用场景可能不一样。
+官方推荐的用法，不过实际使用场景可能不一样，下面是一个简单的示例：
 ``` kotlin
 class MainViewModel : ViewModel() {
 
@@ -96,7 +95,16 @@ class GsonConverter(val gson: Gson) : Converter {
 DsPreferences.init(this, converter = GsonConverter(Gson()))
 ```
 
+然后就可以使用了：
+
+``` kotlin
+DsPreferences.set("foo", foo) 
+...
+val foo = DsPreferences.get<Foo>("foo")
+```
+
 ## 未完成的功能
+
 - [ ] Proto DataStore
 
 ## License
