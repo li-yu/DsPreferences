@@ -28,9 +28,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
             }
         }
 
-        viewModel.appSettings.observe(this, {
+        viewModel.appSettings.observe(this) {
             findViewById<TextView>(R.id.tvValue).text = it?.toString()
-        })
+        }
     }
 
     fun onSaveData(view: View) {
