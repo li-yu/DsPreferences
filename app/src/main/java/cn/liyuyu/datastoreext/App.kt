@@ -7,6 +7,6 @@ import com.google.gson.Gson
 class App : Application() {
     override fun onCreate() {
         super.onCreate()
-        DsPreferences.init(this, converter = GsonConverter(Gson()))
+        DsPreferences.converter = GsonConverter(Gson())
     }
 }

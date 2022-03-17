@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import cn.liyuyu.datastoreext.core.DsPreferences
 
-class MainViewModel : ViewModel() {
+class MainViewModel(dsPreferences: DsPreferences) : ViewModel() {
 
-    var appSettings = DsPreferences.flow("settings","DefaultValue").asLiveData()
+    var appSettings = dsPreferences.flow("settings", "DefaultValue").asLiveData()
 }

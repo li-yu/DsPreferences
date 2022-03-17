@@ -12,7 +12,11 @@ import kotlinx.coroutines.*
 class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
 
     private val viewModel: MainViewModel by lazy {
-        ViewModelProvider(this).get(MainViewModel::class.java)
+        ViewModelProvider(this, ViewModelFactory(dsPreferences)).get(MainViewModel::class.java)
+    }
+
+    private val dsPreferences by lazy {
+        DsPreferences(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,8 +25,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
 
         launch(Dispatchers.IO) {
             var foo = Foo("bar", 18)
-            DsPreferences.set("foo", foo)
-            val value = DsPreferences.get<Foo>("foo")
+            dsPreferences.set("foo", foo)
+            val value = dsPreferences.get<Foo>("foo")
             withContext(Dispatchers.Main) {
                 findViewById<TextView>(R.id.tvValue).text = value.toString()
             }
@@ -37,7 +41,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         val text = findViewById<EditText>(R.id.editText).text.toString()
         if (text.isNotEmpty()) {
             launch(Dispatchers.IO) {
-                DsPreferences.set("settings", text)
+                dsPreferences.set("settings", text)
             }
         }
     }

@@ -1,57 +1,79 @@
 package cn.liyuyu.datastoreext.core
 
 import android.content.Context
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.preferencesKey
-import androidx.datastore.preferences.createDataStore
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.*
+import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.*
 
 /**
  * Created by liyu on 2021/01/10 19:34.
  */
-object DsPreferences {
 
-    private lateinit var name: String
-    private lateinit var context: Context
-    var converter: Converter? = null
+val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "DsPreferences")
 
-    val dataStore by lazy {
-        context.createDataStore(name)
+class DsPreferences(val context: Context) {
+
+    companion object {
+        var converter: Converter? = null
     }
 
-    fun init(context: Context, name: String = "DsPreferences", converter: Converter? = null) {
-        this.context = context.applicationContext
-        this.name = name
-        this.converter = converter
-    }
-
-    inline fun <reified T : Any> flow(key: String, defaultValue: T? = null) = dataStore.data.map {
-        when (T::class) {
-            Int::class, String::class, Boolean::class, Float::class, Long::class, Double::class -> {
-                it[preferencesKey<T>(key)] ?: defaultValue
-            }
-            else -> {
-                converter?.deserialize(
-                    it[preferencesKey(key)] ?: "",
-                    T::class.java
-                )
+    inline fun <reified T : Any> flow(key: String, defaultValue: T? = null) =
+        context.dataStore.data.map {
+            when (T::class) {
+                Int::class -> {
+                    it[intPreferencesKey(key)] ?: defaultValue
+                }
+                String::class -> {
+                    it[stringPreferencesKey(key)] ?: defaultValue
+                }
+                Boolean::class -> {
+                    it[booleanPreferencesKey(key)] ?: defaultValue
+                }
+                Float::class -> {
+                    it[floatPreferencesKey(key)] ?: defaultValue
+                }
+                Long::class -> {
+                    it[longPreferencesKey(key)] ?: defaultValue
+                }
+                Double::class -> {
+                    it[doublePreferencesKey(key)] ?: defaultValue
+                }
+                else -> {
+                    converter?.deserialize(
+                        it[stringPreferencesKey(key)] ?: "",
+                        T::class.java
+                    )
+                }
             }
         }
-    }
 
     suspend inline fun <reified T : Any> get(key: String, defaultValue: T? = null) =
         flow(key, defaultValue).first()
 
     suspend inline fun <reified T : Any> set(key: String, value: T) {
-        when (T::class) {
-            Int::class, String::class, Boolean::class, Float::class, Long::class, Double::class -> {
-                dataStore.edit {
-                    it[preferencesKey<T>(key)] = value
+        context.dataStore.edit {
+            when (T::class) {
+                Int::class -> {
+                    it[intPreferencesKey(key)] = value as Int
                 }
-            }
-            else -> {
-                dataStore.edit {
-                    it[preferencesKey<String>(key)] = this.converter?.serialize(value) ?: ""
+                String::class -> {
+                    it[stringPreferencesKey(key)] = value as String
+                }
+                Boolean::class -> {
+                    it[booleanPreferencesKey(key)] = value as Boolean
+                }
+                Float::class -> {
+                    it[floatPreferencesKey(key)] = value as Float
+                }
+                Long::class -> {
+                    it[longPreferencesKey(key)] = value as Long
+                }
+                Double::class -> {
+                    it[doublePreferencesKey(key)] = value as Double
+                }
+                else -> {
+                    it[stringPreferencesKey(key)] = converter?.serialize(value) ?: ""
                 }
             }
         }
