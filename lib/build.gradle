@@ -4,14 +4,14 @@ plugins {
     id 'maven-publish'
 }
 
-group='com.github.li-yu'
+group = 'com.github.li-yu'
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 32
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 31
+        targetSdkVersion 32
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -34,7 +34,7 @@ android {
 
 dependencies {
 
-    api "androidx.datastore:datastore-preferences:1.0.0-rc01"
+    api "androidx.datastore:datastore-preferences:1.0.0"
 }
 
 afterEvaluate {
@@ -45,7 +45,7 @@ afterEvaluate {
                 from components.release
                 groupId = 'com.github.li-yu'
                 artifactId = 'DataStoreExt'
-                version = '1.1.0'
+                version = '1.1.1'
             }
         }
     }
