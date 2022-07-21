@@ -22,7 +22,7 @@
 2. 添加 DsPreferences 依赖：
    
    ```
-   implementation 'com.github.li-yu:DataStoreExt:1.1.0'
+   implementation 'com.github.li-yu:DataStoreExt:1.1.1'
    ```
 
 ## 使用
@@ -69,6 +69,7 @@ viewModel.appSettings.observe(this) { value ->
 ```
 
 #### 3. 自定义 Converter 实现复杂类型用法
+存储类型化对象推荐使用 Proto DataStore！！！  
 
 和 SharedPreferences 一样，DataStore 同样不推荐存储复杂的大数据，但是聊胜于无。
 
