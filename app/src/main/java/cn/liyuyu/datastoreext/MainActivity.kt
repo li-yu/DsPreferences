@@ -1,10 +1,10 @@
 package cn.liyuyu.datastoreext
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import cn.liyuyu.datastoreext.core.DsPreferences
 import kotlinx.coroutines.*
@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
             var foo = Foo("bar", 18)
             dsPreferences.set("foo", foo)
             val value = dsPreferences.get<Foo>("foo")
+            val value2 = dsPreferences.get("foo", "")
             withContext(Dispatchers.Main) {
                 findViewById<TextView>(R.id.tvValue).text = value.toString()
             }

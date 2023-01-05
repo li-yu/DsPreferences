@@ -45,7 +45,7 @@ afterEvaluate {
                 from components.release
                 groupId = 'com.github.li-yu'
                 artifactId = 'DataStoreExt'
-                version = '1.1.1'
+                version = '1.1.2'
             }
         }
     }

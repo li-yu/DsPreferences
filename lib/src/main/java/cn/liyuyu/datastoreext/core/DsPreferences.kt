@@ -4,7 +4,9 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 
 /**
  * Created by liyu on 2021/01/10 19:34.
@@ -18,7 +20,7 @@ class DsPreferences(val context: Context) {
         var converter: Converter? = null
     }
 
-    inline fun <reified T : Any> flow(key: String, defaultValue: T? = null) =
+    inline fun <reified T : Any> flow(key: String, defaultValue: T? = null): Flow<T> =
         context.dataStore.data.map {
             when (T::class) {
                 Int::class -> {
@@ -46,10 +48,10 @@ class DsPreferences(val context: Context) {
                     )
                 }
             }
-        }
+        } as Flow<T>
 
-    suspend inline fun <reified T : Any> get(key: String, defaultValue: T? = null) =
-        flow(key, defaultValue).first()
+    suspend inline fun <reified T : Any> get(key: String, defaultValue: T? = null): T =
+        flow(key, defaultValue).first() as T
 
     suspend inline fun <reified T : Any> set(key: String, value: T) {
         context.dataStore.edit {
