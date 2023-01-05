@@ -9,7 +9,7 @@
 ## 添加依赖
 
 1. 添加 jitpack 源到工程 build.gradle ：
-   
+
    ```
    allprojects {
     repositories {
@@ -20,9 +20,9 @@
    ```
 
 2. 添加 DsPreferences 依赖：
-   
+
    ```
-   implementation 'com.github.li-yu:DataStoreExt:1.1.1'
+   implementation 'com.github.li-yu:DataStoreExt:1.1.2'
    ```
 
 ## 使用
@@ -46,7 +46,7 @@ dsPreferences.set("foo", foo)       // 自定义实体类型
 
 // 读
 val foo = dsPreferences.get("name", "default")
-val age = dsPreferences.get("age", -1) 
+val age = dsPreferences.get("age", -1)
 val foo = dsPreferences.get<Foo>("foo") // 如果读取失败则返回 null
 ```
 
@@ -58,7 +58,7 @@ val foo = dsPreferences.get<Foo>("foo") // 如果读取失败则返回 null
 class MainViewModel(dsPreferences: DsPreferences) : ViewModel() {
 
     // Flow 通过扩展函数转为 LiveData
-    var appSettings = dsPreferences.flow("settings","DefaultValue").asLiveData()
+    var appSettings = dsPreferences.flow("settings", "DefaultValue").asLiveData()
 }
 
 ...
@@ -69,7 +69,8 @@ viewModel.appSettings.observe(this) { value ->
 ```
 
 #### 3. 自定义 Converter 实现复杂类型用法
-存储类型化对象推荐使用 Proto DataStore！！！  
+
+存储类型化对象推荐使用 Proto DataStore！！！
 
 和 SharedPreferences 一样，DataStore 同样不推荐存储复杂的大数据，但是聊胜于无。
 
@@ -107,7 +108,7 @@ DsPreferences.converter = GsonConverter(Gson())
 然后就可以使用了：
 
 ```kotlin
-dsPreferences.set("foo", foo) 
+dsPreferences.set("foo", foo)
 ...
 val foo = dsPreferences.get<Foo>("foo")
 ```
