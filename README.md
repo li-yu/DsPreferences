@@ -77,7 +77,7 @@ viewModel.appSettings.observe(this) { value ->
 ```kotlin
 interface Converter {
 
-    // 系列化为字符串
+    // 序列化为字符串
     fun serialize(value: Any): String
 
     // 反序列化为对象
@@ -99,13 +99,13 @@ class GsonConverter(val gson: Gson) : Converter {
 }
 ```
 
-最后记得在任意地方设置自定义的 Converter：
+最后记得，在初始化的时候设置自定义 Converter：
 
 ```kotlin
 DsPreferences.converter = GsonConverter(Gson())
 ```
 
-然后就可以使用了：
+然后就可以愉快地使用了：
 
 ```kotlin
 dsPreferences.set("foo", foo)
